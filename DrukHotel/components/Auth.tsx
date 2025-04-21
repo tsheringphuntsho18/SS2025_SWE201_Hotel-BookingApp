@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: 45,
+    paddingBottom: 42,
     alignSelf: "stretch",
   },
   mt20: {
