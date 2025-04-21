@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Alert, StyleSheet, View, AppState } from "react-native";
+import { Alert, StyleSheet, View, AppState, Text } from "react-native";
 import { supabase } from "../lib/supabase";
 import { Button, Input } from "@rneui/themed";
 
@@ -49,6 +49,7 @@ export default function Auth() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Welcome to HomeStay</Text>
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input
           label="Email"
@@ -93,9 +94,16 @@ const styles = StyleSheet.create({
     marginTop: 40,
     padding: 12,
   },
+  title: {
+    marginTop: 100,
+    fontSize: 30,
+    fontWeight: "600",
+    marginBottom: 40,
+    alignSelf: "center",
+  },
   verticallySpaced: {
-    paddingTop: 45,
-    paddingBottom: 42,
+    paddingTop: 4,
+    paddingBottom: 4,
     alignSelf: "stretch",
   },
   mt20: {
