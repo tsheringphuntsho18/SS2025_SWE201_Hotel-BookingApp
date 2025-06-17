@@ -33,7 +33,7 @@ export default function RoomBookingScreen({ hotel, onRoomSelect, onBack }: RoomB
           id: "1",
           hotel_id: hotel.id,
           room_type: "Standard Room",
-          description: "Comfortable room with city view",
+          description: "Comfortable room with village view",
           price_per_night: hotel.price_per_night,
           available: true,
           image_url: "/placeholder.svg?height=200&width=300",
