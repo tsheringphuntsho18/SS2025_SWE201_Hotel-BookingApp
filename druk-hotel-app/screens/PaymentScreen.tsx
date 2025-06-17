@@ -125,14 +125,14 @@ export default function PaymentScreen({ hotel, room, onBack, onPaymentComplete }
 
           <PaymentMethod
             type="paypal"
-            title="PayPal"
+            title="BoB(BankOfBhutan)"
             selected={selectedPayment === "paypal"}
             onSelect={() => setSelectedPayment("paypal")}
           />
 
           <PaymentMethod
             type="apple"
-            title="Apple Pay"
+            title="BNB(BhutanNationBank)"
             selected={selectedPayment === "apple"}
             onSelect={() => setSelectedPayment("apple")}
           />
