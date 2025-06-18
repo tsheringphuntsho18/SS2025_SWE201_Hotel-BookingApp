@@ -71,13 +71,17 @@ export default function HomeScreen({ onHotelSelect, onSignOut }: HomeScreenProps
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
-      <FlatList
-        data={filteredHotels}
-        renderItem={renderHotel}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
-      />
+      {loading ? (
+        <Text style={{ textAlign: "center", marginTop: 50 }}>Loading hotels...</Text>
+      ) : (
+        <FlatList
+          data={filteredHotels}
+          renderItem={renderHotel}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContainer}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </SafeAreaView>
   );
 }
