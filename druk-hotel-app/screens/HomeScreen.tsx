@@ -7,6 +7,7 @@ import { useState, useEffect } from "react"
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, SafeAreaView } from "react-native"
 import { supabase } from "../lib/supabase"
 import type { Hotel } from "../types"
+import { TextInput } from "react-native";
 
 interface HomeScreenProps {
   onHotelSelect: (hotel: Hotel) => void
@@ -16,6 +17,12 @@ interface HomeScreenProps {
 export default function HomeScreen({ onHotelSelect, onSignOut }: HomeScreenProps) {
   const [hotels, setHotels] = useState<Hotel[]>([])
   const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredHotels = hotels.filter(
+    (hotel) =>
+      hotel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      hotel.location.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     fetchHotels()
@@ -58,16 +65,21 @@ export default function HomeScreen({ onHotelSelect, onSignOut }: HomeScreenProps
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
       </View>
-
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search by name or location..."
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+      />
       <FlatList
-        data={hotels}
+        data={filteredHotels}
         renderItem={renderHotel}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -153,4 +165,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#007AFF",
   },
-})
+  searchInput: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 10,
+    fontSize: 16,
+    borderColor: "#ccc",
+    borderWidth: 1,
+  },
+});
