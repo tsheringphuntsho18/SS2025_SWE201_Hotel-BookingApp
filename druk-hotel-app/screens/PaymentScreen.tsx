@@ -105,11 +105,11 @@ export default function PaymentScreen({ hotel, room, onBack, onPaymentComplete }
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Price per night:</Text>
-            <Text style={styles.summaryValue}>${room.price_per_night}</Text>
+            <Text style={styles.summaryValue}>Nu.{room.price_per_night}</Text>
           </View>
           <View style={[styles.summaryRow, styles.totalRow]}>
             <Text style={styles.totalLabel}>Total:</Text>
-            <Text style={styles.totalValue}>${totalAmount}</Text>
+            <Text style={styles.totalValue}>Nu.{totalAmount}</Text>
           </View>
         </View>
 
@@ -125,14 +125,14 @@ export default function PaymentScreen({ hotel, room, onBack, onPaymentComplete }
 
           <PaymentMethod
             type="paypal"
-            title="PayPal"
+            title="BNB(BhutanNationalBank)"
             selected={selectedPayment === "paypal"}
             onSelect={() => setSelectedPayment("paypal")}
           />
 
           <PaymentMethod
             type="apple"
-            title="Apple Pay"
+            title="BOB(BankOfBhutan)"
             selected={selectedPayment === "apple"}
             onSelect={() => setSelectedPayment("apple")}
           />
@@ -184,7 +184,7 @@ export default function PaymentScreen({ hotel, room, onBack, onPaymentComplete }
           onPress={processPayment}
           disabled={loading}
         >
-          <Text style={styles.payButtonText}>{loading ? "Processing..." : `Pay $${totalAmount}`}</Text>
+          <Text style={styles.payButtonText}>{loading ? "Processing..." : `Pay Nu.${totalAmount}`}</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingVertical: 15,
     backgroundColor: "white",
     borderBottomWidth: 1,
     borderBottomColor: "#eee",

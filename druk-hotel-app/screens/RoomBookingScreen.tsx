@@ -27,36 +27,7 @@ export default function RoomBookingScreen({ hotel, onRoomSelect, onBack }: RoomB
       setRooms(data || [])
     } catch (error) {
       console.error("Error fetching rooms:", error)
-      // Mock data for demo
-      setRooms([
-        {
-          id: "1",
-          hotel_id: hotel.id,
-          room_type: "Standard Room",
-          description: "Comfortable room with city view",
-          price_per_night: hotel.price_per_night,
-          available: true,
-          image_url: "/placeholder.svg?height=200&width=300",
-        },
-        {
-          id: "2",
-          hotel_id: hotel.id,
-          room_type: "Deluxe Suite",
-          description: "Spacious suite with premium amenities",
-          price_per_night: hotel.price_per_night + 100,
-          available: true,
-          image_url: "/placeholder.svg?height=200&width=300",
-        },
-        {
-          id: "3",
-          hotel_id: hotel.id,
-          room_type: "Presidential Suite",
-          description: "Luxury suite with panoramic views",
-          price_per_night: hotel.price_per_night + 300,
-          available: true,
-          image_url: "/placeholder.svg?height=200&width=300",
-        },
-      ])
+      setRooms([]) // Or handle error state as you wish
     } finally {
       setLoading(false)
     }
@@ -69,7 +40,7 @@ export default function RoomBookingScreen({ hotel, onRoomSelect, onBack }: RoomB
         <Text style={styles.roomType}>{item.room_type}</Text>
         <Text style={styles.roomDescription}>{item.description}</Text>
         <View style={styles.roomFooter}>
-          <Text style={styles.price}>${item.price_per_night}/night</Text>
+          <Text style={styles.price}>Nu.{item.price_per_night}/night</Text>
           <View style={styles.bookButton}>
             <Text style={styles.bookButtonText}>Book Now</Text>
           </View>
@@ -114,7 +85,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingVertical: 15,
     backgroundColor: "white",
     borderBottomWidth: 1,
     borderBottomColor: "#eee",

@@ -1,10 +1,12 @@
 "use client"
+// This file is part of the Supabase React Native example app.
+// It is used to display a list of hotels fetched from the Supabase database.
+// The code includes a HomeScreen component that fetches hotel data and displays it in a list.
 
 import { useState, useEffect } from "react"
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, SafeAreaView } from "react-native"
 import { supabase } from "../lib/supabase"
 import type { Hotel } from "../types"
-import { TextInput } from "react-native";
 
 interface HomeScreenProps {
   onHotelSelect: (hotel: Hotel) => void
@@ -14,13 +16,6 @@ interface HomeScreenProps {
 export default function HomeScreen({ onHotelSelect, onSignOut }: HomeScreenProps) {
   const [hotels, setHotels] = useState<Hotel[]>([])
   const [loading, setLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState("");
-  const filteredHotels = hotels.filter(
-    (hotel) =>
-      hotel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      hotel.location.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
 
   useEffect(() => {
     fetchHotels()
@@ -34,36 +29,7 @@ export default function HomeScreen({ onHotelSelect, onSignOut }: HomeScreenProps
       setHotels(data || [])
     } catch (error) {
       console.error("Error fetching hotels:", error)
-      // Mock data for demo
-      setHotels([
-        {
-          id: "1",
-          name: "Grand Plaza Hotel",
-          description: "Luxury hotel in the heart of the city",
-          image_url: "/placeholder.svg?height=200&width=300",
-          location: "New York, NY",
-          rating: 4.8,
-          price_per_night: 299,
-        },
-        {
-          id: "2",
-          name: "Ocean View Resort",
-          description: "Beautiful beachfront resort with stunning views",
-          image_url: "/placeholder.svg?height=200&width=300",
-          location: "Miami, FL",
-          rating: 4.6,
-          price_per_night: 199,
-        },
-        {
-          id: "3",
-          name: "Mountain Lodge",
-          description: "Cozy lodge surrounded by nature",
-          image_url: "/placeholder.svg?height=200&width=300",
-          location: "Aspen, CO",
-          rating: 4.7,
-          price_per_night: 249,
-        },
-      ])
+      setHotels([]) 
     } finally {
       setLoading(false)
     }
@@ -78,7 +44,7 @@ export default function HomeScreen({ onHotelSelect, onSignOut }: HomeScreenProps
         <Text style={styles.hotelDescription}>{item.description}</Text>
         <View style={styles.hotelFooter}>
           <Text style={styles.rating}>⭐ {item.rating}</Text>
-          <Text style={styles.price}>${item.price_per_night}/night</Text>
+          <Text style={styles.price}>Nu.{item.price_per_night}/night</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -92,25 +58,16 @@ export default function HomeScreen({ onHotelSelect, onSignOut }: HomeScreenProps
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
       </View>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Search by name or location..."
-        value={searchQuery}
-        onChangeText={setSearchQuery}
+
+      <FlatList
+        data={hotels}
+        renderItem={renderHotel}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContainer}
+        showsVerticalScrollIndicator={false}
       />
-      {loading ? (
-        <Text style={{ textAlign: "center", marginTop: 50 }}>Loading hotels...</Text>
-      ) : (
-        <FlatList
-          data={filteredHotels}
-          renderItem={renderHotel}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.listContainer}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -123,7 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    paddingVertical: 15,
     backgroundColor: "white",
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
@@ -196,13 +153,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#007AFF",
   },
-  searchInput: {
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 10,
-    fontSize: 16,
-    borderColor: "#ccc",
-    borderWidth: 1,
-  },
-});
+})
