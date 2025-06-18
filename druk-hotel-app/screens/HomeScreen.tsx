@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingVertical: 30,
     backgroundColor: "white",
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
