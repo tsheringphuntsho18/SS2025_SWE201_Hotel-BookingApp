@@ -20,11 +20,31 @@ export default function HomeScreen({ onHotelSelect, onSignOut }: HomeScreenProps
       hotel.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       hotel.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const [userName, setUserName] = useState("");
+  const [userImage, setUserImage] = useState("");
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
 
   useEffect(() => {
     fetchHotels()
   }, [])
+
+  useEffect(() => {
+    getUserProfile();
+  }, []);
+
+  async function getUserProfile() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (user) {
+      setUserName(user.user_metadata.full_name || "User");
+      setUserImage(
+        user.user_metadata.avatar_url || "https://via.placeholder.com/40"
+      );
+    }
+  }
+
 
   async function fetchHotels() {
     try {
@@ -87,11 +107,19 @@ export default function HomeScreen({ onHotelSelect, onSignOut }: HomeScreenProps
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Hotels</Text>
-        <TouchableOpacity onPress={onSignOut} style={styles.signOutButton}>
-          <Text style={styles.signOutText}>Sign Out</Text>
+        <Text style={styles.headerTitle}>DrukHotels</Text>
+        <TouchableOpacity onPress={() => setShowProfileMenu(!showProfileMenu)}>
+          <Image source={{ uri: userImage }} style={styles.profileImage} />
         </TouchableOpacity>
       </View>
+      {showProfileMenu && (
+        <View style={styles.profileMenu}>
+          <Text style={styles.profileName}>{userName}</Text>
+          <TouchableOpacity onPress={onSignOut} style={styles.signOutButton}>
+            <Text style={styles.signOutText}>Sign Out</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <TextInput
         style={styles.searchInput}
         placeholder="Search by name or location..."
@@ -99,7 +127,9 @@ export default function HomeScreen({ onHotelSelect, onSignOut }: HomeScreenProps
         onChangeText={setSearchQuery}
       />
       {loading ? (
-        <Text style={{ textAlign: "center", marginTop: 50 }}>Loading hotels...</Text>
+        <Text style={{ textAlign: "center", marginTop: 50 }}>
+          Loading hotels...
+        </Text>
       ) : (
         <FlatList
           data={filteredHotels}
@@ -204,5 +234,34 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderColor: "#ccc",
     borderWidth: 1,
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+
+  profileMenu: {
+    position: "absolute",
+    top: 90,
+    right: 20,
+    backgroundColor: "#fff",
+    padding: 15,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+    zIndex: 10,
+  },
+
+  profileName: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 10,
+    color: "#333",
   },
 });
